@@ -1,7 +1,6 @@
 import './App.css';
 import React, { useState } from 'react';
 import CropWorker from './cropWorker.worker.js';
-import test from './images/test.jpg';
 
 
 function Score({ image, jointData }) {//original image and array of joints
@@ -11,23 +10,18 @@ function Score({ image, jointData }) {//original image and array of joints
     const cropImage = () => {
         if (image && jointData) {
             const testJoint = jointData.Wrist[0];
-            console.log("cropImageif");
-            console.log(image);
-            console.log(testJoint);
             setLoading(true);
             const cropWorker = new CropWorker('cropWorker.worker.js');
-            //const cropWorker = new CropWorker();
-            console.log("create new worker");
 
-            // send data to worker
+            //////////////////// send data to worker ///////////////////////////
             cropWorker.postMessage({image, jointData});
 
             cropWorker.onmessage = (event) => {
-                console.log(event.data);
+                // setCroppedImage(event.data.croppedImage);
+                // now the croppedImage has two arguments: cropped and imageFile
                 setCroppedImage(event.data.croppedImage.cropped);
                 setLoading(false);
                 cropWorker.terminate();
-                console.log(event.data.croppedImage);
             };
             cropWorker.onerror = (error) => {
                 console.error('Error in cropWorker: ', error);
