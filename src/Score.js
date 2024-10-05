@@ -2,7 +2,6 @@ import './App.css';
 import React, { useState } from 'react';
 import CropWorker from './cropWorker.worker.js';
 import test from './images/test.jpg';
-import { Canvas, createCanvas } from 'canvas';
 
 
 function Score({ image, jointData }) {//original image and array of joints
@@ -22,46 +21,6 @@ function Score({ image, jointData }) {//original image and array of joints
 
             // send data to worker
             cropWorker.postMessage({image, jointData});
-
-            // cropping
-            
-            /* const img = document.getElementById("jointpic");
-            const canvas = new createCanvas(img.width, img.height);
-            const ctx = canvas.getContext("2d");
-
-            console.log(img.width, img.height);
-            console.log(canvas.width, canvas.height);
-
-            //const response = fetch(test);
-            //const blob = response.blob();
-            //const img = createImageBitmap(blob);
-            console.log('Image:', img);
-
-            console.log(img.width * testJoint.x, img.height * testJoint.y,
-                img.width * testJoint.width, img.height * testJoint.height,
-                0, 0, testJoint.width, testJoint.height);
-
-            const cropX = img.width * testJoint.x;
-            const cropY = img.height * testJoint.y;
-            const cropWidth = img.width * testJoint.width;
-            const cropHeight = img.height * testJoint.height;
-
-            ctx.drawImage(
-                img, 
-                cropX, cropY,
-                cropWidth, cropHeight,
-                0, 0, 10 * cropWidth, 10 * cropHeight
-            );
-
-            const cropped = canvas.toDataURL();
-
-            try {
-                setCroppedImage(cropped);
-                setLoading(false);
-            } catch (error) {
-                console.error('Error in cropping: ', error);
-                setLoading(false);
-            } */
 
             cropWorker.onmessage = (event) => {
                 console.log(event.data);
