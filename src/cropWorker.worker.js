@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-globals */
 
 self.onmessage = function (event) {
-    console.log("Received message from worker " + event.data);
+    // console.log("Received message from worker " + event.data);
     const { image, jointData } = event.data;
     cropImage(image, jointData)
         .then((croppedImage) => {
@@ -13,12 +13,12 @@ self.onmessage = function (event) {
         });
 };
 
-async function cropImage(imageDataURL, jointDatas) {
-    // cannot use new Image() method to create a new image, i have changed it to use createImageBitmap
+async function cropImage(imageDataURL, jointData) {
     // const img = await loadImage(imageDataURL);
 
     // const jointData = jointDatas.Wrist[0];
-    const jointData = jointDatas.Radius[1];
+    // console.log(jointDatas);
+    // const jointData = jointDatas[0];
 
     const response = await fetch(imageDataURL);
     const blob = await response.blob();
@@ -29,9 +29,6 @@ async function cropImage(imageDataURL, jointDatas) {
     const cropWidth = img.width * jointData.width;
     const cropHeight = img.height * jointData.height;
 
-
-    // depending on the resolution of an image, the cropped joint image size are different.
-    // you can change this to test what is the best way to present an image on the screen
     let canvasWidth = 360;
     let canvasHeight = 360;
     if (img.width > 500) {
@@ -44,6 +41,7 @@ async function cropImage(imageDataURL, jointDatas) {
 
     const canvas = new OffscreenCanvas(canvasWidth, canvasHeight);
     const ctx = canvas.getContext('2d');
+    // ctx.drawImage(img, 0, 0);
 
     ctx.drawImage(
         img, 
@@ -54,7 +52,8 @@ async function cropImage(imageDataURL, jointDatas) {
     );
 
     const blobdata = await canvas.convertToBlob();
-    const imageFile = new File([blobdata], 'cropped-image.png', { type: blobdata.type });
+    // console.log(blobdata);
+    const imageFile = new File([blobdata], 'cropped-image' + jointData.x + '.png', { type: blobdata.type });
     const fileToBase64 = (file) => {//converts uploaded image to base64
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -66,9 +65,6 @@ async function cropImage(imageDataURL, jointDatas) {
 
     const cropped = await fileToBase64(imageFile);
 
-
-    // only base64 url (cropped) can be shonw on the screen.
-    // in case you need the file (imageFile), i return both.
     return {cropped, imageFile};
 
     // return canvasToFile(canvas);
