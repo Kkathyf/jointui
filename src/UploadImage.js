@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import './App.css';
 import session_hash from './session_hash.txt'
@@ -9,6 +9,7 @@ function UploadImage({ onUpload, onJointData }) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [processedImage, setProcessedImage] = useState(null); 
+  const fileInputRef = useRef(null); // Create a ref for the file input
 
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
@@ -20,6 +21,11 @@ function UploadImage({ onUpload, onJointData }) {
     setImage(null);
     setError(null);
     setProcessedImage(null);
+
+    // clear file input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   }
 
   const fileToBase64 = (file) => {//converts uploaded image to base64
@@ -84,7 +90,7 @@ function UploadImage({ onUpload, onJointData }) {
     <div>
       <div className='container'>
         <div className='column'>
-          <input type="file" accept="image/*" onChange={handleImageChange} />
+          <input type="file" accept="image/*" onChange={handleImageChange} ref={fileInputRef} />
           <button onClick={handleSubmit} disabled={loading}>
             {loading ? 'Processing...' : 'Submit'}
           </button>

@@ -5,7 +5,7 @@ function instructions() {
     return(
         <div className='instructions'>
           <div className='container'>
-            <div classname='column1'>
+            <div className='column1'>
             <h2 style={{paddingLeft: 250}}>Instructions</h2>
               <p style={{textAlign: "left", paddingLeft: 200}}>
                 1. Upload an image of a hand x-ray by dragging or selecting.<br />
@@ -14,7 +14,7 @@ function instructions() {
                 4. Click button to detect SVH scores.
               </p>
             </div>
-            <div classname='column1' style={{paddingRight: 250}}>
+            <div className='column1' style={{paddingRight: 250}}>
             <h2>SVH Score Legend</h2>
             <img src={svhscorescale} style={{ width: "50%" }} alt='score legend'/>
             </div>

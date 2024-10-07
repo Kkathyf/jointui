@@ -32,7 +32,7 @@ function App() {
             
         </div>
         <div className='column'>
-          <Score image ={image} jointData={jointData}/>
+          {image && <Score image ={image} jointData={jointData}/>}
         </div>
       </div>
     </div>
