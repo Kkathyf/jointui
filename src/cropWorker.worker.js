@@ -85,4 +85,3 @@ async function cropImage(imageDataURL, jointData) {
 
     return {cropped, imageFile};
 }
-

@@ -12,7 +12,8 @@ function Score({ image, jointData }) {//original image and array of joints
     const cropImage = (image, jointData) => {
         return new Promise((resolve, reject) => {
             setLoading(true);
-            const cropWorker = new CropWorker('cropWorker.worker.js');
+            // const cropWorker = new CropWorker('cropWorker.worker.js');
+            const cropWorker = new CropWorker();
             // console.log("create new worker");
 
             // send data to worker
@@ -91,6 +92,7 @@ function Score({ image, jointData }) {//original image and array of joints
         if (image && jointData) {
             setPredictLoading(true);
             let jointCounter = 0;
+            let tableData = [];
             try {
                 // pip
                 const pipData = jointData.PIP;
@@ -123,30 +125,27 @@ function Score({ image, jointData }) {//original image and array of joints
                 // set cropped image to null
                 setCroppedImage(null);
 
-                // tableData
-                let tableData = [];
-
                 // add rows to tableData
-                const addRows = (newRows, type) => {
-                    if (type === 'Wrist') {
-                        newRows.map((row, index) =>
+                const addRows = (newRows) => {
+                    if (newRows.type === 'Wrist') {
+                        newRows.apiData.map((row, index) =>
                             tableData.push({
                                 id: jointCounter + "-" + index, 
-                                Type: type, 
-                                Erosion: row.erosion_score, 
-                                Narrowing: row.jsn_score, 
-                                Total: row.erosion_score + row.jsn_score
-                            })
-                        );
-                    } else {
-                        newRows.map((row, index) =>
-                            tableData.push({
-                                id: jointCounter + "-" + index, 
-                                Type: type, 
+                                Type: newRows.type, 
                                 Erosion: row.lunate + row.mc1 + row.mul + row.nav, 
                                 Narrowing: row.cap + row.cmc3 + row.cmc4 + row.cmc5 + row.mna + row.rad, 
                                 Total: row.lunate + row.mc1 + row.mul + row.nav +
                                     row.cap + row.cmc3 + row.cmc4 + row.cmc5 + row.mna + row.rad
+                            })
+                        );
+                    } else {
+                        newRows.apiData.map((row, index) =>
+                            tableData.push({
+                                id: jointCounter + "-" + index, 
+                                Type: newRows.type, 
+                                Erosion: row.erosion_score, 
+                                Narrowing: row.jsn_score, 
+                                Total: row.erosion_score + row.jsn_score
                             })
                         );
                     }
@@ -186,32 +185,19 @@ function Score({ image, jointData }) {//original image and array of joints
 
                 ///////////////////// add rows to table //////////////////
 
-                console.log(apiPromises);
-
-                apiPromises.map(data => (addRows(data.apiData, data.type)));
-
-                setPredictLoading(false);
-                setTable(tableData);
+                apiPromises.map(data => addRows(data));
                 
             } catch (error) {
                 console.log(error);
                 setPredictLoading(false);
+            } finally{
+                setPredictLoading(false);
+                setTable(tableData);
             }
         } else {
             alert('Please upload an image first.');
         }
     }
-
-    /* const tableData = [
-        {id: 0, Type: 'MCP', Erosion: 0, Narrowing: 5, Total: 5},
-        {id: 1, Type: 'MCP', Erosion: 3, Narrowing: 0, Total: 3},
-        {id: 2, Type: 'PIP', Erosion: 4, Narrowing: 4, Total: 8},
-        {id: 3, Type: 'PIP', Erosion: 1, Narrowing: 5, Total: 6},
-        {id: 4, Type: 'PIP', Erosion: 2, Narrowing: 2, Total: 4},
-        {id: 5, Type: 'Radius', Erosion: 0, Narrowing: 1, Total: 1},
-        {id: 6, Type: 'Ulna', Erosion: 1, Narrowing: 1, Total: 2},
-        {id: 7, Type: 'Wrist', Erosion: 2, Narrowing: 2, Total: 4},
-    ];*/
 
     return (
         <div>
@@ -232,7 +218,7 @@ function Score({ image, jointData }) {//original image and array of joints
                 )}
             </div>
             <div>
-                <img src={croppedImage}/>
+                {croppedImage && <img src={croppedImage} alt="cropped joint"/>}
             </div>
             <div>
                 <h2>Score Predictions</h2>
