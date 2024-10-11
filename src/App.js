@@ -3,7 +3,6 @@ import Header from './Header.js';
 import UploadImage from './UploadImage.js';
 import React, { useState } from 'react';
 import Score from './Score.js';
-import Instructions from './Instructions.js';
 
 
 
@@ -22,18 +21,14 @@ function App() {
 
   return (
     <div className="App">
-      <Header />
-      <Instructions/>
-
+      <Header/>
       <div className='container'>
         <div className='column'>
-        
-        <UploadImage onUpload={handleUpload} onJointData={handleJointData}/>
-            
+          <UploadImage onUpload={handleUpload} onJointData={handleJointData}/>
         </div>
-        <div className='column'>
-          {image && <Score image ={image} jointData={jointData}/>}
-        </div>
+        {image && <div className='column'>
+          <Score image ={image} jointData={jointData}/>
+        </div>}
       </div>
     </div>
   );

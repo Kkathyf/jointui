@@ -6,7 +6,8 @@ p {color: dimgray; font-family: sans-serif; font-size: 18}
 p {margin: 25px 25px 25px 25px;}
 
 .App {
-  text-align: center;
+  align-items: center;
+  font-family: Arial, sans-serif; /* Optional font styling */
 }
 
 .App-logo {
@@ -15,49 +16,48 @@ p {margin: 25px 25px 25px 25px;}
 }
 
 .header {
-  text-align: center;
+  height: 80px;
   background-color: #E4E4E4;
-  padding-left: 35%;
   color: white;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-}
-
-.intructions {
-  text-align: left;
-  color: whitesmoke;
-}
-
-.instructions-box {
-  background-color: #4d4d4d;
-  height: 95%;
-  border-radius: 15px;
-  padding: 20px;
-  text-align: left;
-  color: white;
 }
 
 .container {
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
+  gap: 20px;
+  padding: 20px;
 }
 
 .column {
-  flex: 1;
+  text-align: center;
+  flex-direction: column;
+  display: flex;
   align-items: center;
-  padding: 10px;
-  margin: 5px;
-  background-color: #f4f4f4;
-  width: 50%
+  /*background-color: #E4E4E4;*/
+  width: 50%;
+  gap: 20px;
+  border-radius: 15px;
 }
 
-.column1 {
-  flex: 1;
-  padding: 10px;
-  margin: 5px;
-  background-color: #f4f4f4;
-  width: 50%
+.columnleft {
+  text-align: center;
+  padding: 20px;
+}
+
+.columnright {
+  padding: 20px;
+  text-align: center;
+}
+
+.svhscoreimg {
+  padding: 20px;
+}
+
+.tableData {
+  padding: 20px;
 }
 
 .button-upload {

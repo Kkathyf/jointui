@@ -3,8 +3,8 @@ import Tiff from 'tiff.js'
 
 self.onmessage = function (event) {
     // console.log("Received message from worker " + event.data);
-    const { image, jointData } = event.data;
-    cropImage(image, jointData)
+    const { image, jointData, type, id } = event.data;
+    cropImage(image, jointData, type, id)
         .then((croppedImage) => {
             self.postMessage({croppedImage});
         })
@@ -14,7 +14,7 @@ self.onmessage = function (event) {
         });
 };
 
-async function cropImage(imageDataURL, jointData) {
+async function cropImage(imageDataURL, jointData, type, id) {
 
     const response = await fetch(imageDataURL);
 
@@ -40,8 +40,15 @@ async function cropImage(imageDataURL, jointData) {
     const cropHeight = img.height * jointData.height;
 
     // Set canvas dimensions
-    let canvasWidth = img.width > 500 ? cropWidth : 10 * cropWidth;
-    let canvasHeight = img.width > 500 ? cropHeight : 10 * cropHeight;
+    let canvasWidth = cropWidth;
+    let canvasHeight = cropHeight;
+
+    const showJointSize = 360;
+
+    /* if (type !== "Wrist") {
+        canvasWidth = img.width > 1000 ? cropWidth : 10 * cropWidth;
+        canvasHeight = img.width > 1000 ? cropHeight : 10 * cropHeight;
+    } */
 
     const canvas = new OffscreenCanvas(canvasWidth, canvasHeight);
     const ctx = canvas.getContext('2d');

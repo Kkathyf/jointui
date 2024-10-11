@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import './App.css';
 import session_hash from './session_hash.txt'
+import Instructions from './Instructions.js';
 
 
 function UploadImage({ onUpload, onJointData }) {
@@ -21,6 +22,7 @@ function UploadImage({ onUpload, onJointData }) {
     setImage(null);
     setError(null);
     setProcessedImage(null);
+    onUpload(null);
 
     // clear file input
     if (fileInputRef.current) {
@@ -87,16 +89,17 @@ function UploadImage({ onUpload, onJointData }) {
   };
 
   return (
-    <div>
-      <div className='container'>
-        <div className='column'>
-          <input type="file" accept="image/*" onChange={handleImageChange} ref={fileInputRef} />
-          <button onClick={handleSubmit} disabled={loading}>
-            {loading ? 'Processing...' : 'Submit'}
-          </button>
-          <button onClick={clearSelection}>
-            {'Clear Image'}
-          </button>
+    <div className='columnleft'>
+        <Instructions/>
+          <div className='inputArea'>
+            <input type="file" accept="image/*" onChange={handleImageChange} ref={fileInputRef} />
+            <button onClick={handleSubmit} disabled={loading}>
+              {loading ? 'Processing...' : 'Submit'}
+            </button>
+            <button onClick={clearSelection}>
+              {'Clear Image'}
+            </button>
+          </div>
           {error && <p style={{ color: 'red' }}>{error}</p>}
           {loading && <div className="spinner"></div>} 
           {processedImage && !loading && (
@@ -106,9 +109,6 @@ function UploadImage({ onUpload, onJointData }) {
             </div>
           )}
         </div>
-      </div>
-      
-    </div>
   );  
 }
 
