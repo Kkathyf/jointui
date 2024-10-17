@@ -26,9 +26,9 @@ function App() {
         <div className='column'>
           <UploadImage onUpload={handleUpload} onJointData={handleJointData}/>
         </div>
-        {image && <div className='column'>
-          <Score image ={image} jointData={jointData}/>
-        </div>}
+        <div className='column'>
+          {image && <Score image ={image} jointData={jointData}/>}
+        </div>
       </div>
     </div>
   );

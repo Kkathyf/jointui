@@ -10,6 +10,9 @@ function Score({ image, jointData }) {//original image and array of joints
     const [predictLoading, setPredictLoading] = useState(null);
     const [table, setTable] = useState(null);
 
+    const predictUrl = 'http://127.0.0.1:8082/';
+    // const predictUrl = 'https://sqbislam-rajointscoreprediction.hf.space/';
+
     const cropImage = (image, jointData, type, id) => {
         return new Promise((resolve, reject) => {
             setLoading(true);
@@ -36,7 +39,7 @@ function Score({ image, jointData }) {//original image and array of joints
     };
 
     async function sendToFingerApi(croppedImage){
-        const url = 'https://sqbislam-rajointscoreprediction.hf.space/predict/fingers';
+        const url = predictUrl + 'predict/fingers';
         const formData = new FormData();
         formData.append('file',croppedImage);
 
@@ -61,7 +64,7 @@ function Score({ image, jointData }) {//original image and array of joints
     }
 
     async function sendToWristApi(croppedImage){
-        const url = 'https://sqbislam-rajointscoreprediction.hf.space/predict/wrist';
+        const url = predictUrl + 'predict/wrist';;
         const formData = new FormData();
         formData.append('file',croppedImage);
 
@@ -195,17 +198,21 @@ function Score({ image, jointData }) {//original image and array of joints
         }
     }
 
-    return (
-        <div className='columnright'>
-            {table && <div className='svhscoreimg'>
+    /* {table && <div className='svhscoreimg'>
                 <h2>SVH Score Legend</h2>
                 <img src={svhscorescale} style={{ width: "50%" }} alt='score legend'/>
+    </div>} */
+
+    return (
+        <div className='columnright'>
+            {table && <div>
+                <h2>Score Prediction</h2>
             </div>}
             <div className='buttons'>
-                <button onClick={scoreJoints}>
-                    {'Score joints'}
+                <button className='button submit-btn' onClick={scoreJoints} disabled={predictLoading}>
+                    {predictLoading? 'Processing...' : 'Score Joints'}
                 </button>
-                <button onClick={clearScore}>
+                <button className="button clear-btn" onClick={clearScore}>
                     {'Clear Scores'}
                 </button>
             </div>
@@ -221,7 +228,7 @@ function Score({ image, jointData }) {//original image and array of joints
                 {croppedImage && <img src={croppedImage} alt="cropped joint"/>}
             </div>
             {table && <div className='tableData'>
-                <h2>Score Predictions</h2>
+                <h2>SVH Score Results</h2>
                 <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                     <thead>
                         <tr style={{ backgroundColor: '#f2f2f2' }}>

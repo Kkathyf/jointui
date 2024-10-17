@@ -91,24 +91,24 @@ function UploadImage({ onUpload, onJointData }) {
   return (
     <div className='columnleft'>
         <Instructions/>
-          <div className='inputArea'>
-            <input type="file" accept="image/*" onChange={handleImageChange} ref={fileInputRef} />
-            <button onClick={handleSubmit} disabled={loading}>
-              {loading ? 'Processing...' : 'Submit'}
-            </button>
-            <button onClick={clearSelection}>
-              {'Clear Image'}
-            </button>
-          </div>
-          {error && <p style={{ color: 'red' }}>{error}</p>}
-          {loading && <div className="spinner"></div>} 
-          {processedImage && !loading && (
-            <div>
-              <h2>Processed Image:</h2>
-              <img src={processedImage} className='processed-image' alt="Processed" />
-            </div>
-          )}
+        <div className='inputArea'>
+          <input className="custom-input" type="file" accept="image/tiff, image/tif, image/png, image/jepg, image/jpg" onChange={handleImageChange} ref={fileInputRef} style={{marginRight: "20px"}} />
+          <button className='button submit-btn' onClick={handleSubmit} disabled={loading}>
+            {loading ? 'Processing...' : 'Submit'}
+          </button>
+          <button className='button clear-btn' onClick={clearSelection}>
+            {'Clear Image'}
+          </button>
         </div>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {loading && <div className="spinner"></div>} 
+        {processedImage && !loading && (
+        <div>
+          <h2>Processed Image:</h2>
+          <img src={processedImage} className='processed-image' alt="Processed" />
+        </div>
+      )}
+    </div>
   );  
 }
 

@@ -45,10 +45,13 @@ async function cropImage(imageDataURL, jointData, type, id) {
 
     const showJointSize = 360;
 
-    /* if (type !== "Wrist") {
-        canvasWidth = img.width > 1000 ? cropWidth : 10 * cropWidth;
-        canvasHeight = img.width > 1000 ? cropHeight : 10 * cropHeight;
-    } */
+    if (canvasWidth >= canvasHeight) {
+        canvasWidth = showJointSize;
+        canvasHeight = showJointSize * cropHeight / cropWidth;
+    } else {
+        canvasHeight = showJointSize;
+        canvasWidth = showJointSize * cropWidth / cropHeight;
+    }
 
     const canvas = new OffscreenCanvas(canvasWidth, canvasHeight);
     const ctx = canvas.getContext('2d');
