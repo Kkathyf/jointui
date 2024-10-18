@@ -12,6 +12,9 @@ function UploadImage({ onUpload, onJointData }) {
   const [processedImage, setProcessedImage] = useState(null); 
   const fileInputRef = useRef(null); // Create a ref for the file input
 
+  const detectUrl = 'https://darylfunggg-xray-hand-joint-detection.hf.space/api/predict/';
+  // const detectUrl = 'http://127.0.0.1:8083/api/predict';
+  
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
     setError(null);
@@ -65,7 +68,7 @@ function UploadImage({ onUpload, onJointData }) {
         const payload = {"fn_index":0,"data": ['"'+base64ImageOriginal+'"'],"session_hash": sessionHashLocal} // use local file method
         ////////////////////////////////////CHANGES//////////////////////////////////////////////
 
-        const response = await axios.post('https://darylfunggg-xray-hand-joint-detection.hf.space/api/predict/',
+        const response = await axios.post(detectUrl,
         payload,
           {
             "content-type": "application/json"

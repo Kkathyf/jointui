@@ -1,7 +1,7 @@
 import './App.css';
 import React, { useState } from 'react';
 import CropWorker from './cropWorker.worker.js';
-import svhscorescale from './images/svhscorescale.png';
+// import svhscorescale from './images/svhscorescale.png';
 
 
 function Score({ image, jointData }) {//original image and array of joints
